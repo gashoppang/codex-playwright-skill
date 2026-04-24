@@ -1,0 +1,4 @@
+interface:
+  display_name: "Playwright CLI"
+  short_description: "Browser automation from the terminal"
+  default_prompt: "Use $playwright-cli to inspect a web page, interact through snapshots, and capture useful artifacts."
