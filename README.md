@@ -1,26 +1,28 @@
 # playwright-cli Codex Skill
 
-Codex가 터미널에서 실제 브라우저를 자동화할 수 있도록 만든 `playwright-cli` 스킬입니다. OpenAI curated `playwright` 스킬의 Codex용 guardrail과 기존 `playwright-cli` 스킬의 상세 명령 레퍼런스를 합쳐, 스냅샷 기반 브라우저 조작과 디버깅 흐름을 바로 사용할 수 있게 정리했습니다.
+English | [한국어](./README.ko.md)
 
-## 지원하는 작업
+This `playwright-cli` skill enables Codex to automate a real browser from the terminal. It combines guardrails from OpenAI's curated `playwright` skill with the detailed command reference from the existing `playwright-cli` skill so you can immediately use snapshot-based browser control and debugging workflows.
 
-- 페이지 열기, 이동, 새로고침, 뒤로/앞으로 이동
-- 스냅샷 기반 요소 선택과 클릭, 입력, 선택, 체크, 드래그
-- 폼 입력과 제출
-- 스크린샷, PDF, trace, video 저장
-- 콘솔 경고와 네트워크 요청 확인
-- 쿠키, localStorage, sessionStorage, storage state 관리
-- named session 기반 브라우저 세션 분리
-- 요청 모킹과 라우팅
-- Playwright 테스트 실행/디버깅/생성 보조
+## Supported Tasks
 
-## 요구 사항
+- Open, navigate, refresh, and move back/forward in pages
+- Snapshot-based element targeting with click, type, select, check, and drag actions
+- Fill and submit forms
+- Save screenshots, PDFs, traces, and videos
+- Inspect console warnings and network requests
+- Manage cookies, localStorage, sessionStorage, and storage state
+- Separate browser contexts with named sessions
+- Route and mock network requests
+- Assist with Playwright test run/debug/generation workflows
 
-- Node.js와 npm
-- `npx` 사용 가능 환경
-- Codex 스킬 디렉터리
+## Requirements
 
-확인:
+- Node.js and npm
+- Environment with `npx` available
+- Codex skills directory
+
+Check:
 
 ```bash
 node --version
@@ -28,30 +30,31 @@ npm --version
 npx --version
 ```
 
-`npx`가 없다면 Node.js/npm을 먼저 설치한 뒤 다시 확인합니다.
+If `npx` is missing, install Node.js/npm first and check again.
 
-## 설치
+## Installation
 
-이 폴더 전체를 Codex 스킬 디렉터리 아래에 복사합니다.
+Copy this entire folder under your Codex skills directory.
 
-Windows 기본 경로:
+Default Windows path:
 
 ```text
-C:\Users\<사용자명>\.codex\skills\playwright-cli
+C:\Users\<username>\.codex\skills\playwright-cli
 ```
 
-macOS/Linux 기본 경로:
+Default macOS/Linux path:
 
 ```text
 ~/.codex/skills/playwright-cli
 ```
 
-최종 구조:
+Final structure:
 
 ```text
 playwright-cli/
 ├─ SKILL.md
 ├─ README.md
+├─ README.ko.md
 ├─ SUMMARY.md
 ├─ agents/
 │  └─ openai.yaml
@@ -64,9 +67,9 @@ playwright-cli/
    └─ ...
 ```
 
-설치 후 Codex를 재시작하면 스킬이 감지됩니다.
+Restart Codex after installation so the skill is detected.
 
-## 빠른 시작
+## Quick Start
 
 PowerShell:
 
@@ -86,23 +89,23 @@ export PWCLI="$CODEX_HOME/skills/playwright-cli/scripts/playwright_cli.sh"
 "$PWCLI" snapshot
 ```
 
-래퍼는 내부적으로 다음 명령을 사용합니다.
+The wrappers call the command below internally:
 
 ```bash
 npx --yes --package @playwright/cli playwright-cli
 ```
 
-따라서 전역 `playwright-cli` 설치가 없어도 동작합니다.
+So it works without a global `playwright-cli` install.
 
-## 기본 워크플로
+## Basic Workflow
 
-1. 브라우저를 엽니다.
-2. `snapshot`으로 현재 페이지 상태와 element ref를 얻습니다.
-3. 최신 snapshot의 ref로 클릭, 입력, 선택 같은 조작을 합니다.
-4. 화면 전환, 모달, 메뉴, 탭 변경, 큰 DOM 변경 뒤에는 다시 snapshot을 찍습니다.
-5. 필요한 경우 스크린샷, trace, console, network 결과를 저장합니다.
+1. Open a browser.
+2. Run `snapshot` to get current page state and element refs.
+3. Use refs from the latest snapshot for actions like click/type/select.
+4. Re-run `snapshot` after major DOM changes (navigation, modal/menu/tab changes, etc.).
+5. Save screenshots/traces/console/network outputs when needed.
 
-예시:
+Example:
 
 ```bash
 "$PWCLI" open https://example.com --headed
@@ -112,7 +115,7 @@ npx --yes --package @playwright/cli playwright-cli
 "$PWCLI" screenshot --filename=output/playwright/example/final.png
 ```
 
-PowerShell에서는 이렇게 호출합니다.
+PowerShell equivalent:
 
 ```powershell
 & $env:PWCLI open https://example.com --headed
@@ -122,16 +125,16 @@ PowerShell에서는 이렇게 호출합니다.
 & $env:PWCLI screenshot --filename=output/playwright/example/final.png
 ```
 
-## 세션 사용
+## Using Sessions
 
-여러 작업을 분리하거나 로그인 상태를 유지해야 할 때 named session을 사용합니다.
+Use named sessions when you need isolated flows or persistent login state.
 
 ```bash
 "$PWCLI" --session checkout open https://example.com/checkout --headed
 "$PWCLI" --session checkout snapshot
 ```
 
-환경 변수로 기본 세션을 지정할 수도 있습니다.
+You can also set a default session via environment variable.
 
 PowerShell:
 
@@ -147,39 +150,39 @@ export PLAYWRIGHT_CLI_SESSION=checkout
 "$PWCLI" open https://example.com/checkout
 ```
 
-## 참고 문서
+## References
 
-- `references/cli.md`: 주요 `playwright-cli` 명령 모음
-- `references/workflows.md`: 실무 워크플로와 문제 해결
-- `references/playwright-tests.md`: Playwright 테스트 실행/디버깅
-- `references/request-mocking.md`: 요청 모킹
-- `references/running-code.md`: Playwright 코드 실행
-- `references/session-management.md`: 브라우저 세션 관리
-- `references/storage-state.md`: 쿠키와 storage state 관리
-- `references/test-generation.md`: 테스트 생성
-- `references/tracing.md`: trace 캡처
-- `references/video-recording.md`: 비디오 기록
-- `references/element-attributes.md`: 요소 속성 확인
+- `references/cli.md`: Key `playwright-cli` commands
+- `references/workflows.md`: Practical workflows and troubleshooting
+- `references/playwright-tests.md`: Run/debug Playwright tests
+- `references/request-mocking.md`: Request mocking
+- `references/running-code.md`: Execute Playwright code
+- `references/session-management.md`: Browser session management
+- `references/storage-state.md`: Cookies and storage state
+- `references/test-generation.md`: Test generation
+- `references/tracing.md`: Trace capture
+- `references/video-recording.md`: Video recording
+- `references/element-attributes.md`: Element attributes
 
-## 배포할 때 제외할 것
+## What to Exclude When Packaging
 
-다음 파일이나 폴더는 배포하지 않는 편이 좋습니다.
+It is generally best to exclude:
 
 - `node_modules/`
 - `.playwright-cli/`
 - `output/playwright/`
-- trace, screenshot, video 같은 실행 산출물
-- 로그인 쿠키, auth state, storage state 등 개인 인증 정보
+- Runtime artifacts such as trace/screenshot/video outputs
+- Sensitive auth data such as login cookies/auth state/storage state
 
-## Bash 실행 권한
+## Bash Execute Permission
 
-macOS/Linux 사용자를 위해 Git에서 Bash 래퍼 실행 권한을 보존하려면:
+To preserve Bash wrapper execute permission in Git on macOS/Linux:
 
 ```bash
 git update-index --chmod=+x playwright-cli/scripts/playwright_cli.sh
 ```
 
-리포 안에서 `skills/playwright-cli/` 형태로 배포한다면 경로를 맞춰 실행합니다.
+If you package it under `skills/playwright-cli/` inside a repo, run with that path:
 
 ```bash
 git update-index --chmod=+x skills/playwright-cli/scripts/playwright_cli.sh
